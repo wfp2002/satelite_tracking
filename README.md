@@ -17,11 +17,15 @@ sudo apt-get install gpredict
 sudo apt-get install libhamlib-utils
 
 Comando para executar no terminal apos hamlib instalado: 
+
 rotctld -m 202 -s 19200 -v -r /dev/ttyACM0
 
 -m 202 (Utiliza easycommII)
+
 -s 19200 (Serial baudrate 19200)
+
 -v Verbose Mode
+
 -r /dev/ttyACM0 (USB qe o arduino esta conectado, pode variar como ttyUSB0 etc...)
 
 ----------------------------------------------------------------------------------
