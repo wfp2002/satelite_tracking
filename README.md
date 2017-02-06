@@ -13,10 +13,10 @@ Software
 - GPredict
 sudo apt-get install gpredict
 
-- Hamlib (Para comunicacao com Arduino usando rotctld)
+- Hamlib (Para comunicacao com Arduino usando rotctld): 
 sudo apt-get install libhamlib-utils
 
-Comando para executar no terminal apos hamlib instalado
+Comando para executar no terminal apos hamlib instalado: 
 rotctld -m 202 -s 19200 -v -r /dev/ttyACM0
 
 -m 202 (Utiliza easycommII)
