@@ -5,9 +5,15 @@ Ferramentas Necessarias:
 
 Sistema Utilizado Lubuntu
 
+Bibliotecas Externas:
+- AccelStepper
+- LCD5110
+
 Hardware
 - Motor de Passo Modelo: 28BYJ-48
 - Arduino
+- Potenciomento 10K
+- LCD Nokia 5110
 
 Software
 - GPredict
