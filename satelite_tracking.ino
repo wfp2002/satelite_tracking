@@ -51,31 +51,15 @@ void setup() {
   delay(2000); 
   tela.InitLCD(); //Inicializando o display
   
-  
-  
+  tela.setContrast(80);
   
   tela.setFont(SmallFont); //Definindo a fonte
- //Escreve a palavra vida alinhada à esquerda começando na linha 0
- 
- tela.print("INICIANDO", LEFT, 0);
- tela.print("O", CENTER, 20);
- tela.print("LCD", RIGHT, 40);
- delay(1000);
- tela.clrScr();
- 
- //tela.print("Numero medio:", LEFT, 0);
- //tela.setFont(MediumNumbers);
- //tela.printNumI(123, CENTER, 16);
- //delay(2000);
- //tela.clrScr();
- 
- //tela.setFont(SmallFont);
- //tela.print("Numero grande:", LEFT, 0);
- //tela.setFont(BigNumbers);
- //tela.printNumI(123, CENTER, 16);
- //delay(2000);
- //tela.clrScr();
- 
+  //String, Posicao, Linha
+  tela.print("INICIANDO", LEFT, 0);
+  tela.print("O", CENTER, 20);
+  tela.print("LCD", RIGHT, 40);
+  delay(1000);
+  tela.clrScr();
   
   motor.setMaxSpeed(500.0);
   motor.move(-1);  //Isso foi necessario
@@ -95,16 +79,20 @@ if(angleAz == 0){
 }
 
 else if (angleEl == 0){
-
+  
   posicao = (graus360 - motor.currentPosition());
-  //Serial.println(graus360);
-  //Serial.println(motor.currentPosition());
-  //Serial.println(posicao);
-  //Se posicao for igual 4075 quer dizer que o motor ja voltou ao ponto inicial depois da passagem do satelite e nao precisa ficar mandando a informacao de retorno eternamente ate ter a proxima elevacao
+  
+  //Se posicao for igual 0 quer dizer que o motor ja voltou ao ponto inicial depois da passagem do satelite e nao precisa ficar mandando a informacao de retorno eternamente ate ter a proxima elevacao
   if (posicao == 0) {
-    //Nao faz nada
-      //Serial.println("Rotor na posicao 0");
-  } else {
+    //Nao faz nada apenas imprime na tela
+     tela.clrScr();
+     tela.setFont(SmallFont);
+     tela.print("QRV - TKS", CENTER, 0);
+     tela.setFont(BigNumbers);
+     tela.printNumI(73,CENTER, 20);
+     delay(2000);
+     
+   } else {
       //Serial.println("Voltando o rotor para posicao 0");
       motor.move(graus360 - motor.currentPosition());
       motor.setSpeed(velocidade);
@@ -134,33 +122,15 @@ else {
      tela.print("Elevacao Graus", CENTER,24);
      tela.setFont(MediumNumbers);
      tela.printNumF(angleEl,2, CENTER, 32);
-     
-     
-     //Serial.print("Angulo Azimute: ");
-     //Serial.println(angleAz);
-     //Serial.print("Angulo Elevacao: ");
-     //Serial.println(angleEl);
-     //Serial.print("Valor PIN 0: ");
-     //Serial.println(angleAz);
+         
      local = 0;
-     
-     
-  //Serial.print("Passos DistanceToGo: ");
-  //Serial.println(motor.distanceToGo());
-  
-  //Serial.print("Posicao Corrente: ");
-  //Serial.println(motor.currentPosition());
-  
-  //Serial.print("Local - Corrent: ");
-  //Serial.println(local - motor.currentPosition());
-  
- 
-  delay(1000);
-  
-  grausParaPassos(angleAz);
-  motor.move(local - motor.currentPosition());
-  motor.setSpeed(velocidade);
-  }
+           
+     delay(1000);
+        
+     grausParaPassos(angleAz);
+     motor.move(local - motor.currentPosition());
+     motor.setSpeed(velocidade);
+    }
   
   //Passos da posicao corrente ate o local destino
   passos = motor.distanceToGo();
