@@ -222,4 +222,3 @@ void grausParaPassos(float par){
 local = ((par * graus360) / 360);  
     
 }
-
