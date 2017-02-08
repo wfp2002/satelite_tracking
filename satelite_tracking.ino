@@ -1,6 +1,27 @@
 #include <AccelStepper.h>
 #include <LCD5110_Basic.h>
 
+/*
+PINAGEM lcd grove
+
+LCD - ARDUINO
+VCC - 5V
+GND - GND
+SDA - A4
+SCL - A5
+
+*/
+//Parte do LCD GROVE
+#include <Wire.h>
+#include "rgb_lcd.h"
+
+rgb_lcd lcd;
+
+const int colorR = 0;
+const int colorG = 255;
+const int colorB = 0;
+//FIM DA PARTE LCD GROVE
+
 
 LCD5110 tela(2,3,4,5,6);
 /*Cria objeto da classe LCD5110
@@ -48,7 +69,22 @@ float angleAz, angleEl;
 
 void setup() {
   
-  delay(2000); 
+  delay(2000);
+ 
+   lcd.begin(16, 2);
+   lcd.setRGB(colorR, colorG, colorB);
+   //   lcd.createChar(0, sat);
+  //lcd.createChar(1, seta315);
+
+    // Print a message to the LCD.
+    //lcd.setCursor(0, 0);
+    //lcd.print("Azimute: 337.86");
+    //lcd.setCursor(0, 1);
+    //lcd.print("Elevacao: 16.94");
+ 
+ 
+ 
+  
   tela.InitLCD(); //Inicializando o display
   
   tela.setContrast(80);
@@ -112,6 +148,17 @@ else {
      if (val > 0) {
      angleAz = map(val, 0, 1023, 0, 360);
      }
+       
+       
+     lcd.setCursor(0, 0);
+     lcd.print("Azimute: ");
+     lcd.print(angleAz);
+     lcd.setCursor(0, 1);
+     lcd.print("Elevacao: ");
+     lcd.print(angleEl);
+   
+       
+       
        
      tela.clrScr();
      tela.setFont(SmallFont);
