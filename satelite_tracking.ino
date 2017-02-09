@@ -13,7 +13,7 @@ SCL - A5
 */
 //Parte do LCD GROVE
 #include <Wire.h>
-#include "rgb_lcd.h"
+#include <rgb_lcd.h>
 
 rgb_lcd lcd;
 
@@ -67,22 +67,145 @@ float angleAz, angleEl;
 #define AZ_Gear_Ratio 4.625 //Gear ratio of the Azimuth drive system (74t/16t)
 #define EL_Gear_Ratio 3.625 //Gear ratio of the Elevation drive system (58t/16t)
 
+
+
+
+
+
+
+
+
+byte seta0[8] = {
+  B00000,
+  B00100,
+  B00010,
+  B11111,
+  B00010,
+  B00100,
+  B00000,
+  B00000,
+};
+
+
+byte seta45[8] = {
+  B00000,
+  B00111,
+  B00011,
+  B00101,
+  B01000,
+  B10000,
+  B00000,
+  B00000,
+};
+
+
+
+byte seta90[8] = {
+  B00100,
+  B01110,
+  B10101,
+  B00100,
+  B00100,
+  B00100,
+  B00100,
+  B00100,
+};
+
+
+byte seta135[8] = {
+  B00000,
+  B11100,
+  B11000,
+  B10100,
+  B00010,
+  B00001,
+  B00000,
+  B00000,
+};
+
+
+byte seta270[8] = {
+  B00100,
+  B00100,
+  B00100,
+  B00100,
+  B00100,
+  B10101,
+  B01110,
+  B00100,
+};
+
+
+
+byte seta180[8] = {
+  B00000,
+  B00100,
+  B01000,
+  B11111,
+  B01000,
+  B00100,
+  B00000,
+  B00000,
+};
+
+
+byte seta225[8] = {
+  B00000,
+  B00001,
+  B00010,
+  B10100,
+  B11000,
+  B11100,
+  B00000,
+  B00000,
+};
+
+
+byte seta315[8] = {
+  B00000,
+  B10000,
+  B01000,
+  B00101,
+  B00011,
+  B00111,
+  B00000,
+  B00000,
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void setup() {
   
   delay(2000);
  
    lcd.begin(16, 2);
    lcd.setRGB(colorR, colorG, colorB);
-   //   lcd.createChar(0, sat);
-  //lcd.createChar(1, seta315);
-
+   lcd.createChar(0, seta45);
+   lcd.createChar(1, seta135);
+   lcd.createChar(2, seta225);
+   lcd.createChar(3, seta315);
+   lcd.createChar(4, seta90);
+   lcd.createChar(5, seta180);
+   lcd.createChar(6, seta270);
+   lcd.createChar(7, seta0);
+  
     // Print a message to the LCD.
     //lcd.setCursor(0, 0);
     //lcd.print("Azimute: 337.86");
     //lcd.setCursor(0, 1);
     //lcd.print("Elevacao: 16.94");
- 
- 
  
   
   tela.InitLCD(); //Inicializando o display
@@ -121,6 +244,14 @@ else if (angleEl == 0){
   //Se posicao for igual 0 quer dizer que o motor ja voltou ao ponto inicial depois da passagem do satelite e nao precisa ficar mandando a informacao de retorno eternamente ate ter a proxima elevacao
   if (posicao == 0) {
     //Nao faz nada apenas imprime na tela
+    
+      lcd.setRGB(0,0, 255);
+      lcd.clear();
+    lcd.setCursor(0, 0);
+     lcd.print("Aguardando...");
+     lcd.setCursor(0, 1);
+     lcd.print("Satelite !!!");
+    
      tela.clrScr();
      tela.setFont(SmallFont);
      tela.print("QRV - TKS", CENTER, 0);
@@ -149,17 +280,24 @@ else {
      angleAz = map(val, 0, 1023, 0, 360);
      }
        
-       
+     //LCD GROVE 
+     
+    
+     lcd.clear();
+     
+      
      lcd.setCursor(0, 0);
      lcd.print("Azimute: ");
      lcd.print(angleAz);
      lcd.setCursor(0, 1);
      lcd.print("Elevacao: ");
      lcd.print(angleEl);
-   
+     
+     bouncing();
+     
        
        
-       
+     //LCD NOKIA 5110
      tela.clrScr();
      tela.setFont(SmallFont);
      tela.print("Azimute  Graus", CENTER, 0);
@@ -238,5 +376,82 @@ void grausParaPassos(float par){
 //devolve o local em passos
 local = ((par * graus360) / 360);  
     
+}
+
+
+void bouncing()
+{
+  
+    if (angleAz > 0 and angleAz < 10.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)4);
+    }
+    
+    else if (angleAz >= 11 and angleAz < 80.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)0);
+    }
+    
+    else if (angleAz >= 81 and angleAz < 100.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)7);
+    }
+
+
+    else if (angleAz >= 101 and angleAz < 170.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)3);
+    }
+    
+    else if (angleAz >= 171 && angleAz < 190.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)6);
+    }
+    
+    else if (angleAz >= 191 && angleAz < 260.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)2);
+    }
+    
+    else if (angleAz >= 261 and angleAz < 280.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)5);
+    }
+    
+    else if (angleAz >= 281 and angleAz < 350.99){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)1);
+    }
+    
+    else if (angleAz >= 351 and angleAz < 360){
+    lcd.setCursor(15, 0);
+    lcd.write((unsigned char)4);
+    }
+    
+    
+    
+    
+    if (angleEl > 0 and angleEl < 10.99){
+    lcd.setRGB(255, 0, 0);
+    lcd.setCursor(15, 1);
+    lcd.write((unsigned char)5);
+    }
+    
+    else if (angleEl >= 11 and angleEl < 80.99){
+    lcd.setRGB(0,255, 0);
+    lcd.setCursor(15, 1);
+    lcd.write((unsigned char)1);
+    }
+    
+    else if (angleEl >= 81 and angleEl < 90){
+    lcd.setRGB(0,255, 0);
+    lcd.setCursor(15, 1);
+    lcd.write((unsigned char)4);
+    }
+    
+     
+    //lcd.setCursor(15, 1);
+    //lcd.write((unsigned char)0);
+   
 }
 
